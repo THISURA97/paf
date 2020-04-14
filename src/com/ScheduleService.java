@@ -3,6 +3,7 @@ package com;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
+import javax.websocket.server.PathParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -19,21 +20,34 @@ import beans.ScheduleBean;
 import model.Schedule;
 
 @Path("/Schedule")
-@PermitAll
+
 
 public class ScheduleService {
 		
-		Schedule objSchedule = new Schedule();
+		Schedule sch = new Schedule();
 
 
 		//View a Schedule
+		@PermitAll
+		//@RolesAllowed({"administrator","doctor"}) - access control
 		@GET
 		@Path("/")
 		@Produces(MediaType.APPLICATION_JSON)
 		public List<ScheduleBean> viewSchedule() {
-			return objSchedule.viewSchedule();
+			return sch.viewSchedule();
 		}
-				
+		
+		@PermitAll
+		@GET
+		@Path("/{ScheduleID}")
+		@Produces(MediaType.APPLICATION_JSON)
+		public ScheduleBean viewScheduleById(@PathParam("PatientID") int id) {
+			return sch.viewScheduleById(id);
+		}
+		
+		@PermitAll
+		//@RolesAllowed({"administrator","doctor"}) - access control
+		
 		//Insert a Schedule
 		@POST
 		@Path("/")
@@ -42,42 +56,39 @@ public class ScheduleService {
 		public String insertSchedule(String ScheduleData) {
 			
 	 
-			JsonObject scheduleObject = new JsonParser().parse(ScheduleData).getAsJsonObject();
-
-			String ScheduleID = scheduleObject.get("s_is").getAsString();
-			String ScheduleDate = scheduleObject.get("s_date").getAsString();
-			String ScheduleTime = scheduleObject.get("s_time").getAsString();
-			String ScheduleType = scheduleObject.get("s_type").getAsString();
+			ScheduleBean schedule = new ScheduleBean(ScheduleData);
+			return sch.insertSchedule(schedule);
 			
-					
-			String output =	objSchedule.insertSchedule( ScheduleID, ScheduleDate, ScheduleTime, ScheduleType);
-			return output;
 		} 
-				
+			
+		@PermitAll
+		//@RolesAllowed({"administrator","doctor"}) - access control
+		
 		//Update a Schedule
 		@PUT
 		@Path("/")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String updateDoctor(String Schedule) {
-			ScheduleBean sch = new ScheduleBean(Schedule);
+		public String updateDoctor(String ScheduleData) {
 			
-			String output =	objSchedule.updateSchedule(sch);
-			return output;				
+			ScheduleBean schB = new ScheduleBean(ScheduleData);
+			return sch.updateSchedule(schB);
+						
 		}
-				
+		
+		@PermitAll
+		//@RolesAllowed({"administrator","doctor"}) - access control
+		
 		//Remove a Schedule
 		@DELETE
 		@Path("/")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String removeSchedule(String schedule) {
-			JsonObject ScheduleObject = new JsonParser().parse(schedule).getAsJsonObject();
+		public String removeSchedule(String ScheduleData) {
+			JsonObject ScheduleObject = new JsonParser().parse(ScheduleData).getAsJsonObject();
 			
-			String ScheduleID = ScheduleObject.get("s_ID").getAsString();
-			String output = objSchedule.removeSchedule(ScheduleID);
-			
-			return output;
+			String ScheduleID = ScheduleObject.get("ScheduleID").getAsString();
+			return sch.removeSchedule(ScheduleID);
 			
 			
 		}
