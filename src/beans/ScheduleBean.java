@@ -1,7 +1,6 @@
 package beans;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -9,24 +8,58 @@ import com.google.gson.JsonParser;
 public class ScheduleBean {
 
 	
-	private String ScheduleID;
+	int id;
 	private String ScheduleDate;
 	private String ScheduleTime;
 	private String ScheduleType;
 	
 	
-	public ScheduleBean() {
+public ScheduleBean(String Schedule) {
 		
+		JsonObject sch = new JsonParser().parse(Schedule).getAsJsonObject();
+	
+		if (sch.get("ScheduleID") != null) 
+		{
+		this.id = sch.get("ScheduleID").getAsInt();
+		}
+		
+		this.ScheduleDate = sch.get("ScheduleDate").getAsString();
+		this.ScheduleTime = sch.get("ScheduleTime").getAsString();
+		this.ScheduleType = sch.get("ScheduleType").getAsString();
+	}
+
+	
+
+public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status) {
+		
+		this.id = id;
+		this.ScheduleDate = ScheduleDate;
+		this.ScheduleTime = ScheduleTime;
+		this.ScheduleType = ScheduleType;
+	}
+	
+public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status) {
+		
+		
+		this.ScheduleDate = ScheduleDate;
+		this.ScheduleTime = ScheduleTime;
+		this.ScheduleType = ScheduleType;
 	}
 
 
-	public String getScheduleID() {
-		return ScheduleID;
+	public ScheduleBean() {
+
+}
+
+
+
+	public int getId() {
+		return id;
 	}
 
 
-	public void setScheduleID(String scheduleID) {
-		ScheduleID = scheduleID;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 
@@ -60,26 +93,6 @@ public class ScheduleBean {
 	}
 
 
-	public ScheduleBean(String Schedule) {
-		
-		JsonObject scheduleObject = new JsonParser().parse(Schedule).getAsJsonObject();
 	
-		if (scheduleObject.get("ScheduleID") != null) 
-		{
-		this.ScheduleID = scheduleObject.get("ScheduleID").getAsString();
-		}
-		
-		this.ScheduleDate = scheduleObject.get("ScheduleDate").getAsString();
-		this.ScheduleTime = scheduleObject.get("ScheduleTime").getAsString();
-		this.ScheduleType = scheduleObject.get("ScheduleType").getAsString();
-	}
-
-	public ScheduleBean(String scheduleID, String scheduleDate, String scheduleTime, String scheduleType) {
-		super();
-		this.ScheduleID = scheduleID;
-		this.ScheduleDate = scheduleDate;
-		this.ScheduleTime = scheduleTime;
-		this.ScheduleType = scheduleType;
-	}
 	
 }
