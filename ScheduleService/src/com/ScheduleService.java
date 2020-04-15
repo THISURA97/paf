@@ -1,4 +1,4 @@
-package com;
+package src.com;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import beans.ScheduleBean;
-import model.Schedule;
+import src.beans.ScheduleBean;
+import src.model.Schedule;
 
 @Path("/Schedule")
 
@@ -69,7 +69,7 @@ public class ScheduleService {
 		@Path("/")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String updateDoctor(String ScheduleData) {
+		public String updateSchedule(String ScheduleData) {
 			
 			ScheduleBean schB = new ScheduleBean(ScheduleData);
 			return sch.updateSchedule(schB);

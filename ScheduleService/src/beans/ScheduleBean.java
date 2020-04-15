@@ -1,4 +1,4 @@
-package beans;
+package src.beans;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import com.google.gson.JsonObject;
@@ -12,9 +12,10 @@ public class ScheduleBean {
 	private String ScheduleDate;
 	private String ScheduleTime;
 	private String ScheduleType;
+	private String adminID;
 	
 	
-public ScheduleBean(String Schedule) {
+public ScheduleBean(int i, String Schedule, String string, String string2, String query) {
 		
 		JsonObject sch = new JsonParser().parse(Schedule).getAsJsonObject();
 	
@@ -26,24 +27,28 @@ public ScheduleBean(String Schedule) {
 		this.ScheduleDate = sch.get("ScheduleDate").getAsString();
 		this.ScheduleTime = sch.get("ScheduleTime").getAsString();
 		this.ScheduleType = sch.get("ScheduleType").getAsString();
-	}
+		this.adminID = sch.get("adminID").getAsString();
+
+}
 
 	
 
-public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status) {
+public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID) {
 		
 		this.id = id;
 		this.ScheduleDate = ScheduleDate;
 		this.ScheduleTime = ScheduleTime;
 		this.ScheduleType = ScheduleType;
+		this.adminID = adminID;
 	}
 	
-public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status) {
+public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID) {
 		
 		
 		this.ScheduleDate = ScheduleDate;
 		this.ScheduleTime = ScheduleTime;
 		this.ScheduleType = ScheduleType;
+		this.adminID = adminID;
 	}
 
 
@@ -51,7 +56,19 @@ public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleTy
 
 }
 
+	 public ScheduleBean(String scheduleData) {
+		// TODO Auto-generated constructor stub
+	}
 
+
+
+	public String getAdminID() {
+	        return adminID;
+	    }
+
+	    public void setAdminID(String adminID) {
+	        this.adminID = adminID;
+	    }
 
 	public int getId() {
 		return id;

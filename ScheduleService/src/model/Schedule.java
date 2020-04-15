@@ -1,4 +1,4 @@
-package model;
+package src.model;
 
 
 import java.sql.Connection;
@@ -10,8 +10,8 @@ import java.util.List;
 
 
 
-import beans.ScheduleBean;
-import util.DBConnection;
+import src.beans.ScheduleBean;
+import src.util.DBConnection;
 
 public class Schedule {
 	
@@ -25,7 +25,7 @@ public class Schedule {
 		{
 			Connection con = DBConnection.connect();
 			if (con == null) {
-				return "Error while connecting to the database for inserting.";
+				return "Error - while insert schedule details to database.";
 			}
 			
 				
@@ -45,12 +45,12 @@ public class Schedule {
 			//Execute the prepared statements
 			preparedSt.execute();
 			con.close();
-			output = "Inserted successfully";
+			output = "Schedule details inserted successfully";
 			
 			
 		} catch (Exception e) {
 			
-			output = "Error while inserting the schedule.";
+			output = "Error -  while inserting the schedule.";
 			System.err.println(e.getMessage());
 		}
 		return output;
@@ -79,7 +79,7 @@ public class Schedule {
 				Connection con = DBConnection.connect();
 				if (con == null) {
 					
-					System.out.println("Error While reading from database");
+					System.out.println("Error - While trying to view from database");
 					return ScheduleList;
 				}
 				String query;
@@ -111,7 +111,7 @@ public class Schedule {
 
 			}
 			catch (Exception e) {
-				System.out.println("Error While Reading");
+				System.out.println("Error - While trying to view schedule details");
 				System.err.println(e.getMessage());
 			}
 			
@@ -127,14 +127,14 @@ public class Schedule {
 				Connection con = DBConnection.connect();
 				
 				if (con == null) {
-					return "Error while connecting to the database for updating.";
+					return "Error - while connecting to the database for updating schedule details.";
 				}
 				
 				
 			
-				String query = "UPDATE `Schedule` SET"
+				String query = "update `Schedule` set"
 								+"`s_date`=?,`s_time`=?,`s_type`=?,"
-								+"WHERE s_id = ? ";
+								+"where s_id = ? ";
 						
 
 				PreparedStatement preparedSt = con.prepareStatement(query);
@@ -151,11 +151,11 @@ public class Schedule {
 				// Prepared Statement Execution
 				preparedSt.execute();
 				con.close();
-				output = "Updated successfully";
+				output = "Schedule details updated successfully";
 				
 			} 
 			catch (Exception e) {
-				output = "Error while updating the Schedule.";
+				output = "Error - while updating the Schedule details.";
 				System.err.println(e.getMessage());
 			}
 			
@@ -172,7 +172,7 @@ public class Schedule {
 				Connection con = DBConnection.connect();
 			
 				if (con == null) {
-					return "Error while connecting to the database for deleting.";
+					return "Error - while connecting to the database for remove schedule details.";
 				}
 				
 				
@@ -189,11 +189,11 @@ public class Schedule {
 				// execute the statement
 				preparedSt.execute();
 				con.close();
-				output = "Deleted successfully";
+				output = "Schedule details remove successfully";
 				
 			} 
 			catch (Exception e) {
-				output = "Error while deleting the Schedule.";
+				output = "Error - while deleting the schedule details.";
 				System.err.println(e.getMessage());
 			}
 			
