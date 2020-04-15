@@ -1,6 +1,6 @@
 package model;
 
-import demo.UserDemo;
+import beans.UserBeans;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -31,7 +31,7 @@ public class User {
 		return con;
 	}
 	
-	public String insertUser(UserDemo usr) {
+	public String insertUser(UserBeans usr) {
 		
 		String output = "";
 		
@@ -76,9 +76,9 @@ public class User {
 		return output;
 	}
 	
- 	public List<UserDemo> readUser(){
+ 	public List<UserBeans> readUser(){
  		
- 		List<UserDemo> usrList = new ArrayList<>();
+ 		List<UserBeans> usrList = new ArrayList<>();
  		
  		String output = "";
  		
@@ -99,7 +99,7 @@ public class User {
  			
  			while (rslt.next()) {
  				
- 				UserDemo usr = new UserDemo(
+ 				UserBeans usr = new UserBeans(
  						
  						rslt.getInt("userID"),
  						rslt.getString("firstName"),
@@ -129,7 +129,7 @@ public class User {
  		
  	}
  	
- 	public String updateUser(UserDemo usr) {
+ 	public String updateUser(UserBeans usr) {
  		
  		String output = "";
  		
