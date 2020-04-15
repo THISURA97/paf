@@ -16,12 +16,8 @@ import util.DBConnection;
 public class Schedule {
 	
 	//Insert a Schedule
-	
-	
-
-	
-
-	public String insertSchedule(String ScheduleId,String ScheduleDate,String ScheduleTime,String ScheduleType) {
+	public String insertSchedule(ScheduleBean schB)
+	{
 
 		String output = "";
 		
@@ -34,25 +30,23 @@ public class Schedule {
 			
 				
 			String query =" INSERT INTO `Schedule`"
-						+ "(`s_ID`, `s_date`, `s_time`, `s_type`) "
-						+ "VALUES (?,?,?,?)";
+						+ "(`ScheduleID`, `ScheduleDate`, `ScheduleTime`, `ScheduleType`) "
+						+ "values (?,?,?,?)";
 			
-			PreparedStatement preparedStmt = con.prepareStatement(query);
-			
-			
-
-			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, ScheduleDate);
-			preparedStmt.setString(3, ScheduleTime);
-			preparedStmt.setString(4, ScheduleType);
+			PreparedStatement preparedSt = con.prepareStatement(query);
 			
 			
+			//blinding values
+			preparedSt.setInt(1, 0);
+			preparedSt.setString(2, schB.getScheduleDate());
+			preparedSt.setString(3, schB.getScheduleTime());
+			preparedSt.setString(4, schB.getScheduleType());
 			
-			//Prepared Statement Execution
-			preparedStmt.execute();
+			//Execute the prepared statements
+			preparedSt.execute();
 			con.close();
 			output = "Inserted successfully";
-			System.out.println(output);
+			
 			
 		} catch (Exception e) {
 			
@@ -62,9 +56,22 @@ public class Schedule {
 		return output;
 	}
 	
+	public List<ScheduleBean> viewSchedule() {
+		
+		return	viewSchedule(0);
+
+	}
+	
+	public ScheduleBean viewScheduleById(int id) {
+	List<ScheduleBean> list =viewSchedule(id);
+		if(!list.isEmpty()) {
+			return	list.get(0);
+		}
+		return null;
+	}
 	
 	//View the Schedule
-		public List<ScheduleBean> viewSchedule() {
+		public List<ScheduleBean> viewSchedule(int id) {
 				List <ScheduleBean> ScheduleList = new ArrayList<>();
 				
 			try 
@@ -75,23 +82,29 @@ public class Schedule {
 					System.out.println("Error While reading from database");
 					return ScheduleList;
 				}
-
-				String query = "select * from Schedule";
+				String query;
+				if(id == 0) {
+					query = "select * from Schedule";
+				}else {
+					query = "select * from Schedule where ScheduleID="+id;
+				}
+				
 				Statement st = con.createStatement();
 				ResultSet rs = st.executeQuery(query);
 
 				while (rs.next()) 
 				{
-					ScheduleBean schedule = new ScheduleBean
+					ScheduleBean schB = new ScheduleBean
 							(
-									rs.getString("s_ID"),
-									rs.getString("s_date"),
-									rs.getString("s_time"),
-									rs.getString("s_type")
+									rs.getInt("ScheduleID"),
+									rs.getString("ScheduleDate"),
+									rs.getString("ScheduleTime"),
+									rs.getString("ScheduleType"),
+									query
+									);
 												
-													
-							);
-					ScheduleList.add(schedule);
+										
+					ScheduleList.add(schB);
 
 				}
 				con.close();
@@ -119,26 +132,24 @@ public class Schedule {
 				
 				
 			
-				String query = "UPDATE `schedule` SET"
+				String query = "UPDATE `Schedule` SET"
 								+"`s_date`=?,`s_time`=?,`s_type`=?,"
 								+"WHERE s_id = ? ";
 						
 
-				PreparedStatement preparedStmt = con.prepareStatement(query);
+				PreparedStatement preparedSt = con.prepareStatement(query);
 
 				
 				// binding values
-				preparedStmt.setString(1, sch.getScheduleDate());
-				preparedStmt.setString(2, sch.getScheduleTime());
-				preparedStmt.setString(3, sch.getScheduleType());			
-				
-				
-				preparedStmt.setString(4, sch.getScheduleID());
+				preparedSt.setString(1, sch.getScheduleDate());
+				preparedSt.setString(2, sch.getScheduleTime());
+				preparedSt.setString(3, sch.getScheduleType());			
+				preparedSt.setInt(4, sch.getId());
 				
 				
 
 				// Prepared Statement Execution
-				preparedStmt.execute();
+				preparedSt.execute();
 				con.close();
 				output = "Updated successfully";
 				
@@ -151,6 +162,8 @@ public class Schedule {
 			return output;
 		}
 
+		
+		//remove schedule
 		public String removeSchedule(String ScheduleID) {
 			String output = "";
 			
@@ -164,7 +177,7 @@ public class Schedule {
 				
 				
 				// Prepared Statement
-				String query = "delete from schedule where s_ID=?";
+				String query = "delete from Schedule where ScheduleID=?";
 				
 				PreparedStatement preparedSt = con.prepareStatement(query);
 
