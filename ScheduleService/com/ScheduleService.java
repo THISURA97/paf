@@ -1,4 +1,4 @@
-package src.com;
+package com;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import javax.ws.rs.core.MediaType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import src.beans.ScheduleBean;
-import src.model.Schedule;
+import beans.ScheduleBean;
+import model.Schedule;
 
 @Path("/Schedule")
 

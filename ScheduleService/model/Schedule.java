@@ -1,4 +1,4 @@
-package src.model;
+package model;
 
 
 import java.sql.Connection;
@@ -8,10 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-//check push req 1.0
-
-import src.beans.ScheduleBean;
-import src.util.DBConnection;
+import beans.ScheduleBean;
+import util.DBConnection;
 
 public class Schedule {
 	

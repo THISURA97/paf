@@ -1,4 +1,4 @@
-package src.beans;
+package beans;
 
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;

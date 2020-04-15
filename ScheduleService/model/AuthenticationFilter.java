@@ -1,12 +1,12 @@
-package src.model;
+package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Set;
 import javax.ws.rs.ext.Provider;
- 
-import src.util.DBConnection;
+
+import util.DBConnection;
 
 @Provider
 public class AuthenticationFilter 

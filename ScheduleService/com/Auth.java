@@ -1,4 +1,4 @@
-package src.com;
+package com;
 
 import java.lang.reflect.Method;
 import java.io.IOException;
@@ -16,9 +16,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+
+import model.AuthenticationFilter;
+
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
-import src.model.AuthenticationFilter;
 
 
 @Provider

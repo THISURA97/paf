@@ -1,4 +1,4 @@
-package src.beans;
+package beans;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import com.google.gson.JsonObject;
