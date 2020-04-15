@@ -1,47 +1,57 @@
 package com;
 
-import model.Account;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-//For REST Service import javax.ws.rs.*; 
-import javax.ws.rs.core.MediaType;
-
-//For JSON 
+import beans.UserBeans;
 import com.google.gson.*;
+import org.jsoup.*;
+import org.jsoup.parser.*;
+import org.jsoup.nodes.*;
 
-//For XML import org.jsoup.*; import org.jsoup.parser.*; import org.jsoup.nodes.Document; 
+import model.User;
 
-@Path("/Accounts")
-public class AccountService {
-	Account accObj = new Account();
+import java.util.List;
 
+@Path("/Users")
+public class UserService{
+	
+	User userObj = new User();
+	
 	@GET
 	@Path("/")
-	@Produces(MediaType.TEXT_HTML)
-	public String readAccount() {
-		return accObj.readAccount();
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<UserBeans> readUser(){
+		
+		return userObj.readUser();
 	}
-
+	
 	@POST
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Produces(MediaType.TEXT_PLAIN)
-	public String insertItem(@FormParam("title") String title,
-			@FormParam("fname") String fname,
-			@FormParam("lname") String lname,
-			@FormParam("nic") String nic,
-			@FormParam("dob") String dob,
-			@FormParam("address") String address,
-			@FormParam("phone") String phone,
-			@FormParam("email") String email) 
-	{
-		String output = accObj.insertAccount(title, fname, lname, nic, dob, address, phone, email);
-		return output;
-	}
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String insertUser(String userData) {
 
+        UserBeans usr = new UserBeans(userData);
+        String output = userObj.insertUser(usr);
+
+        return output;
+
+    }
+	
+	@DELETE
+    @Path("/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String deleteUser(String userData) {
+
+        JsonObject userObject = new JsonParser().parse(userData).getAsJsonObject();
+        String userID = userObject.get("userID").getAsString();
+
+        String output = userObj.deleteUser(userID);
+
+        return output;
+
+    }
+	
 }

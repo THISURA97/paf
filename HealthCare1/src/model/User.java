@@ -21,7 +21,7 @@ public class User {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			//DB name, username, password
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3308/healthcare", "root", "");
+			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
 			
 		} catch (Exception e) {
 			
