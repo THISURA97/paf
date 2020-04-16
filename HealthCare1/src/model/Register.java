@@ -111,7 +111,7 @@ public static HashMap<String, String> login(String email, String password, Strin
 			if (rs1_verifyLogin.getInt(2) == Integer.parseInt(roleID)) {
 
 				h.put("status", "success");
-				h.put("registerId", register.getRegisterID());
+				h.put("registerId") register.getRegisterID());
 			}else {
 				h.put("status", "fail");
 				h.put("userId", null);
