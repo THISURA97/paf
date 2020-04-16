@@ -12,6 +12,7 @@ public class ScheduleBean {
 	private String ScheduleDate;
 	private String ScheduleTime;
 	private String ScheduleType;
+	private String Status;
 	private String adminID;
 	
 	
@@ -27,27 +28,30 @@ public ScheduleBean(int i, String Schedule, String string, String string2, Strin
 		this.ScheduleDate = sch.get("ScheduleDate").getAsString();
 		this.ScheduleTime = sch.get("ScheduleTime").getAsString();
 		this.ScheduleType = sch.get("ScheduleType").getAsString();
+		this.Status = sch.get("Status").getAsString();
 		this.adminID = sch.get("adminID").getAsString();
 
 }
 
 	
 
-public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID) {
+public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID,String Status) {
 		
 		this.id = id;
 		this.ScheduleDate = ScheduleDate;
 		this.ScheduleTime = ScheduleTime;
 		this.ScheduleType = ScheduleType;
+		this.Status = Status;
 		this.adminID = adminID;
 	}
 	
-public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID) {
+public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID,String Status) {
 		
 		
 		this.ScheduleDate = ScheduleDate;
 		this.ScheduleTime = ScheduleTime;
 		this.ScheduleType = ScheduleType;
+		this.Status = Status;
 		this.adminID = adminID;
 	}
 
@@ -61,6 +65,13 @@ public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleTy
 	}
 
 
+	 public String getStatus() {
+			return Status;
+		}
+
+		public void setStatus(String Status) {
+			this.Status = Status;
+		}
 
 	public String getAdminID() {
 	        return adminID;

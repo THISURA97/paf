@@ -1,6 +1,7 @@
 package com;
 
 import java.lang.reflect.Method;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
@@ -8,21 +9,26 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
+
 import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
+import org.glassfish.jersey.jackson.JacksonFeature;
 
-import model.AuthenticationFilter;
 
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
-
-
 @Provider
 public class Auth implements ContainerRequestFilter {
 		
@@ -64,11 +70,15 @@ public class Auth implements ContainerRequestFilter {
 				String authTag = auth.get(0);
 				authTag = authTag.replaceFirst("Basic", "");
 				
-				byte[] decodedStr = Base64.getDecoder().decode(authTag);
-				
-				String NameAndPass = new String(decodedStr, "UTF-8");
-				StringTokenizer tokenizer = new StringTokenizer(NameAndPass, ":");
-			
+				String decodedString = "";
+				try {
+					byte[] decodedBytes = Base64.getDecoder().decode(authTag);
+					decodedString = new String(decodedBytes, "UTF-8");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				final StringTokenizer tokenizer = new StringTokenizer(decodedString, ":");
+
 				final String username = tokenizer.nextToken();
 				final String password = tokenizer.nextToken();
 			
@@ -77,19 +87,46 @@ public class Auth implements ContainerRequestFilter {
 	                RolesAllowed rolesAnnotation = method.getAnnotation(RolesAllowed.class);
 	                Set<String> roleType = new HashSet<String>(Arrays.asList(rolesAnnotation.value()));
 	                  
-	                
-	                if( ! AuthenticationFilter.isUserAllowed(username, password, roleType))
-	                {
-	                	Response response = Response.status(Status.UNAUTHORIZED).entity("User Can't Access this Resource").build();	                	
-	                	requestContext.abortWith(response);
-	                   
-	                }
-	                return;
+	                ClientConfig clientConfig = new ClientConfig();
+					HttpAuthenticationFeature feature = HttpAuthenticationFeature.basic(username, password);
+					clientConfig.register(feature);
+
+					clientConfig.register(JacksonFeature.class);
+
+					Client client = ClientBuilder.newClient(clientConfig);
+					WebTarget webTarget;
+
+					if (roleType.contains("administrator")) {
+						webTarget = client.target("http://localhost:8081/AuthService/AuthService").path("users/admin");
+
+					} else if (roleType.contains("doctor")) {
+						webTarget = client.target("http://localhost:8081/AuthService/AuthService").path("users/doctor");
+					} else {
+						webTarget = client.target("http://localhost:8081/AuthService/AuthService")
+								.path("users/patient");
+					}
+
+					Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
+
+					Response response = invocationBuilder.get();
+
+					if (response.getStatus() != 200) {
+						Response unauthoriazedStatus = Response.status(Response.Status.UNAUTHORIZED).entity("{\"error\" : \"not authorized 3\"}").build();
+						requestContext.abortWith(unauthoriazedStatus);
+
+					}
+					return;
+	               
+	              
 	            }
 			
 				
 			
 			}
+		Response unauthoriazedStatus = Response.status(Response.Status.UNAUTHORIZED)
+				.entity("{\"error\" : \"not authorized 1\"}").build();
+		requestContext.abortWith(unauthoriazedStatus);
+
 	    }
 	
 
