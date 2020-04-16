@@ -211,7 +211,7 @@ public static Register getRegisterDetails(String registerID) {
 
 		while (rs5.next()) {
 
-			register = new Register(registerID, rs5.getString(1), rs5.getString(2), rs5.getString(3));
+			register = new Register(registerID, rs5.getString(1), rs5.getString(2), rs5.getString(3), rs5.getString(4));
 		}
 
 	} catch (Exception e) {
@@ -237,13 +237,69 @@ public static Register getRegisterDetailsByLoginId(String loginID) {
 
 		while (rs.next()) {
 
-			register = new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3));
+			register = new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4));
 		}
 
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
 
+	return register;
+}
+
+public static ArrayList<Register> getAllRegisters() {
+
+	ArrayList<Register> allRegisters = new ArrayList<>();
+	try {
+
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+
+		String getSql = "SELECT r.registerID, r.userName, l.L_email, r.phone, FROM register r, login l WHERE r.loginID = l.loginID";
+
+		PreparedStatement stmt_getUserDetails = con.prepareStatement(getSql);
+
+		ResultSet rs = stmt_getUserDetails.executeQuery();
+
+		while (rs.next()) {
+			allRegisters.add(new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4));
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	return allRegisters;
+
+}
+
+public static Register deleteRegister(String registerID) {
+	
+	Register register = null;
+	
+	try {
+		register = getRegisterDetails(registerID);
+		int loginID = getLoginID(registerID);
+		
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+		
+		String deleteFromRegister = "DELETE FROM user WHERE registerID = " + registerID;
+
+		if (loginID > 0) {
+			String deleteFromLogin = "DELETE FROM login WHERE loginID = " + loginID;
+			PreparedStatement stmt_deleteFromRegister = con.prepareStatement(deleteFromRegister);
+			if (stmt_deleteFromRegister.executeUpdate() > 0) {
+
+				PreparedStatement stmt_deleteFromLogin = con.prepareStatement(deleteFromLogin);
+				if (stmt_deleteFromLogin.executeUpdate() < 0) {
+					register = null;
+				}
+
+			}
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 	return register;
 }
 
