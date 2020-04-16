@@ -15,25 +15,25 @@ public class ScheduleBean {
 	private String Status;
 	private String adminID;
 	
-	
-public ScheduleBean(int i, String Schedule, String string, String string2, String query) {
+	public ScheduleBean() {
 		
-		JsonObject sch = new JsonParser().parse(Schedule).getAsJsonObject();
+	}
 	
-		if (sch.get("ScheduleID") != null) 
-		{
-		this.id = sch.get("ScheduleID").getAsInt();
-		}
-		
-		this.ScheduleDate = sch.get("ScheduleDate").getAsString();
-		this.ScheduleTime = sch.get("ScheduleTime").getAsString();
-		this.ScheduleType = sch.get("ScheduleType").getAsString();
-		this.Status = sch.get("Status").getAsString();
-		this.adminID = sch.get("adminID").getAsString();
+	public ScheduleBean(String sch) {
 
-}
+        JsonObject schO = new JsonParser().parse(sch).getAsJsonObject();
 
-	
+        if (schO.get("ScheduleID") !=null) {
+            this.id = schO.get("ScheduleID").getAsInt();
+        }
+        this.ScheduleDate = schO.get("ScheduleDate").getAsString();
+        this.ScheduleTime = schO.get("ScheduleTime").getAsString();
+        this.ScheduleType = schO.get("ScheduleType").getAsString();
+        this.Status = schO.get("Status").getAsString();
+        this.adminID = schO.get("adminID").getAsString();
+
+
+    }
 
 public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID,String Status) {
 		
@@ -56,16 +56,11 @@ public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleTy
 	}
 
 
-	public ScheduleBean() {
-
+	public ScheduleBean(int int1, String string, String string2, String string3, String query) {
+	// TODO Auto-generated constructor stub
 }
 
-	 public ScheduleBean(String scheduleData) {
-		// TODO Auto-generated constructor stub
-	}
-
-
-	 public String getStatus() {
+	public String getStatus() {
 			return Status;
 		}
 
