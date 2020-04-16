@@ -1,7 +1,4 @@
 package com;
-import java.util.*;
-
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -9,12 +6,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import beans.ScheduleBean;
 import model.Schedule;
@@ -26,16 +19,16 @@ public class ScheduleService {
 		
 		Schedule schO = new Schedule();
 		
-		
+		ScheduleBean sb;
 
 
 		//View a Schedule
 		
 		@RolesAllowed({"administrator","doctor"})
 		@GET
-		@Path("/")
+		@Path("/view")
 		@Produces(MediaType.APPLICATION_JSON)
-		public List<ScheduleBean> viewSchedule(){
+		public String viewSchedule(){
 
 				return schO.viewSchedule();
 		
@@ -43,13 +36,14 @@ public class ScheduleService {
 		
 		@RolesAllowed({"administrator","doctor"})
 		@POST
-		@Path("/")
+		@Path("/insert")
 		@Consumes(MediaType.APPLICATION_JSON)
 	    @Produces(MediaType.TEXT_PLAIN)
-		public String insertSchedule(String Schedule) {
+		public String insertSchedule(String ScheduleData) {
 
-	        ScheduleBean schB = new ScheduleBean(Schedule);
-	        String output =	schO.insertSchedule(schB);
+	        sb = new ScheduleBean();
+	        sb.convertStringToJSONInsert(ScheduleData);
+	        String output =	schO.insertSchedule(sb);
 
 	        return output;
 
@@ -59,35 +53,38 @@ public class ScheduleService {
 		
 		@RolesAllowed({"administrator","doctor"})
 		@PUT
-		@Path("/")
+		@Path("/update")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String updateSchedule(String Schedule)
+		public String updateSchedule(String ScheduleData)
 				{
-			 ScheduleBean schB = new ScheduleBean(Schedule);
-		        String output =	schO.updateSchedule(schB);
+			 sb = new ScheduleBean();
+		        sb.convertStringToJSONUpdate(ScheduleData);
+		        String output =	schO.updateSchedule(sb);
 
 		        return output;
 
 		}
 		
 		
-		@RolesAllowed({"administrator","doctor"}) 
+		//@RolesAllowed({"administrator","doctor"}) 
 		
 		//Remove a Schedule
 		@DELETE
-		@Path("/")
+		@Path("/delete")
 		@Consumes(MediaType.APPLICATION_JSON)
 		@Produces(MediaType.TEXT_PLAIN)
-		public String removeSchedule(String Schedule) {
-			JsonObject schO = new JsonParser().parse(Schedule).getAsJsonObject();
-	        
-			String ScheduleID = schO.get("ScheduleID").getAsString();
+		public String removeSchedule(String ScheduleData) {
+			 
 			
-			String output = schO.removeSchedule(ScheduleID);
+			 sb = new ScheduleBean();
+		        sb.convertStringToJSONDelete(ScheduleData);
+		        String output =	schO.removeSchedule(sb);
 
-	        return output;
+		        return output;
+			
 		}
+		
 		
 	    }
 

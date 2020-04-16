@@ -8,12 +8,14 @@ import com.google.gson.JsonParser;
 public class ScheduleBean {
 
 	
-	int id;
+	private int ScheduleID;
 	private String ScheduleDate;
 	private String ScheduleTime;
 	private String ScheduleType;
 	private String Status;
 	private String adminID;
+	
+	private JsonObject ScheduleObject;
 	
 	public ScheduleBean() {
 		
@@ -24,7 +26,7 @@ public class ScheduleBean {
         JsonObject schO = new JsonParser().parse(sch).getAsJsonObject();
 
         if (schO.get("ScheduleID") !=null) {
-            this.id = schO.get("ScheduleID").getAsInt();
+            this.setScheduleID(schO.get("ScheduleID").getAsInt());
         }
         this.ScheduleDate = schO.get("ScheduleDate").getAsString();
         this.ScheduleTime = schO.get("ScheduleTime").getAsString();
@@ -35,31 +37,33 @@ public class ScheduleBean {
 
     }
 
-public ScheduleBean(int id, String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID,String Status) {
+public void convertStringToJSONInsert(String ScheduleData) {
 		
-		this.id = id;
-		this.ScheduleDate = ScheduleDate;
-		this.ScheduleTime = ScheduleTime;
-		this.ScheduleType = ScheduleType;
-		this.Status = Status;
-		this.adminID = adminID;
+	ScheduleObject = new JsonParser().parse(ScheduleData).getAsJsonObject();
+		setScheduleID(ScheduleObject.get("ScheduleID").getAsInt());
+		setScheduleDate(ScheduleObject.get("ScheduleDate").getAsString());
+		setScheduleTime(ScheduleObject.get("ScheduleTime").getAsString());
+		setScheduleType(ScheduleObject.get("ScheduleType").getAsString());
+		setStatus(ScheduleObject.get("Status").getAsString());
+		setAdminID(ScheduleObject.get("AdminID").getAsString());
 	}
 	
-public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleType, String status,String adminID,String Status) {
-		
-		
-		this.ScheduleDate = ScheduleDate;
-		this.ScheduleTime = ScheduleTime;
-		this.ScheduleType = ScheduleType;
-		this.Status = Status;
-		this.adminID = adminID;
+public void convertStringToJSONUpdate(String ScheduleData) {
+	
+	ScheduleObject = new JsonParser().parse(ScheduleData).getAsJsonObject();
+		setScheduleID(ScheduleObject.get("ScheduleID").getAsInt());
+		setScheduleDate(ScheduleObject.get("ScheduleDate").getAsString());
+		setScheduleTime(ScheduleObject.get("ScheduleTime").getAsString());
+		setScheduleType(ScheduleObject.get("ScheduleType").getAsString());
+		setStatus(ScheduleObject.get("Status").getAsString());
+		setAdminID(ScheduleObject.get("AdminID").getAsString());
 	}
-
-
-	public ScheduleBean(int int1, String string, String string2, String string3, String query) {
-	// TODO Auto-generated constructor stub
+	
+public void convertStringToJSONDelete(String ScheduleData) {
+	
+	ScheduleObject  = new JsonParser().parse(ScheduleData).getAsJsonObject(); 		
+	setScheduleID(ScheduleObject.get("ScheduleID").getAsInt());
 }
-
 	public String getStatus() {
 			return Status;
 		}
@@ -76,14 +80,7 @@ public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleTy
 	        this.adminID = adminID;
 	    }
 
-	public int getId() {
-		return id;
-	}
-
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 
 
 	public String getScheduleDate() {
@@ -113,6 +110,14 @@ public ScheduleBean( String ScheduleDate, String ScheduleTime, String ScheduleTy
 
 	public void setScheduleType(String scheduleType) {
 		ScheduleType = scheduleType;
+	}
+
+	public int getScheduleID() {
+		return ScheduleID;
+	}
+
+	public void setScheduleID(int scheduleID) {
+		ScheduleID = scheduleID;
 	}
 
 
