@@ -44,7 +44,7 @@ public static int registerUser(String userName, String email, String password, S
 		String insertSQL1 = "INSERT INTO login VALUES(?, ?, ?, ?)";
 		String insertSQL2 = "INSERT INTO register VALUES(?, ?, ?, ?)";
 		String emailVarification = "SELECT * FROM login WHERE login_Email = ?";
-		String getUId = "SELECT Login_Id FROM login WHERE Login_Email = ?";
+		String getRId = "SELECT Login_Id FROM login WHERE Login_Email = ?";
 		
 		//prepared statements
 		PreparedStatement stmt_emailVerification = con.prepareStatement(emailVarification);
@@ -61,10 +61,10 @@ public static int registerUser(String userName, String email, String password, S
 			stmt_insertLogin.setString(4, password);
 			i = stmt_insertLogin.executeUpdate();
 			
-			PreparedStatement stmt_getUId = con.prepareStatement(getUId);
-			stmt_getUId.setString(1, email);
+			PreparedStatement stmt_getRId = con.prepareStatement(getRId);
+			stmt_getRId.setString(1, email);
 			
-			ResultSet rs2 = stmt_getUId.executeQuery();
+			ResultSet rs2 = stmt_getRId.executeQuery();
 			
 			while (rs2.next()) {
 				
@@ -93,4 +93,60 @@ public static int registerUser(String userName, String email, String password, S
 	return i;
 }
 
+public static HashMap<String, String> login(String email, String password, String roleID) {
+	HashMap<String, String> h = new HashMap<>();
+	
+	try {
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+		
+		String verifyLogin = "SELECT * FROM login WHERE L-email = ? and L_password = ?";
+		PreparedStatement stmt_verifyLogin = con.prepareStatement(verifyLogin);
+		stmt_verifyLogin.setString(1, email);
+		stmt_verifyLogin.setString(2, password);
+		
+		ResultSet rs1_verifyLogin = stmt_verifyLogin.executeQuery();
+
+		while (rs1_verifyLogin.next()) {
+
+			if (rs1_verifyLogin.getInt(2) == Integer.parseInt(roleID)) {
+
+				Register register = getRegisterDetailsByLoginId(String.valueOf(rs1_verifyLogin.getInt(1)));
+				h.put("status", "success");
+				h.put("registerId", register.getRegisterID());
+			}else {
+				h.put("status", "fail");
+				h.put("userId", null);
+			}
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	return h;
 }
+
+public static int getLoginId(String registerID) {
+	
+	int loginID = 0;
+	
+	try {
+
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+		String getLoginID = "SELECT login_id FROM user WHERE register_ID = " + registerID;
+		PreparedStatement stmt_getLoginId = con.prepareStatement(getLoginID);
+		ResultSet rs2_getLoginId = stmt_getLoginId.executeQuery();
+
+		while (rs2_getLoginId.next()) {
+			loginID = rs2_getLoginId.getInt(1);
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return loginID;
+}
+	
+}
+
+

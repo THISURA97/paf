@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class RegisterBeans {
 	
-	int userId;
+	int registerID;
 	private String userName;
 	private String email;
 	private String password;
@@ -13,28 +13,28 @@ public class RegisterBeans {
 	
 	public RegisterBeans() {}
 	
-	public RegisterBeans(int userId, String userName, String email, String password, String phone) {
+	public RegisterBeans(int registerID, String userName, String email, String password, String phone) {
 		super();
-		this.userId = userId;
+		this.registerID = registerID;
 		this.userName = userName;
 		this.email = email;
 		this.phone = phone;
 	}
 	
-	public RegisterBeans(int userId, String userName, String email, String phone) {
+	public RegisterBeans(int registerId, String userName, String email, String phone) {
 		super();
-		this.userId = userId;
+		this.registerID = registerId;
 		this.userName = userName;
 		this.email = email;
 		this.phone = phone;
 	}
 
-	public int getUserId() {
-		return userId;
+	public int getRegisterID() {
+		return registerID;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setRegisterID(int registerId) {
+		this.registerID = registerId;
 	}
 
 	public String getUserName() {
