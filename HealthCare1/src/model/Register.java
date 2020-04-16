@@ -110,7 +110,6 @@ public static HashMap<String, String> login(String email, String password, Strin
 
 			if (rs1_verifyLogin.getInt(2) == Integer.parseInt(roleID)) {
 
-				Register register = getRegisterDetailsByLoginId(String.valueOf(rs1_verifyLogin.getInt(1)));
 				h.put("status", "success");
 				h.put("registerId", register.getRegisterID());
 			}else {
@@ -196,112 +195,33 @@ public static String verifyPassword(String registerID, String currentPassword) {
 	return status;
 }
 
-public static Register getRegisterDetails(String registerID) {
-	Register register = null;
-	try {
+public static String resetPassword(String registerID, String currentPassword, String newPassword) {
 
+	String status = null;
+
+	try {
 		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
-
-		String getSql = "SELECT r.userName, l.L_Email, r.phone, FROM register r, login l WHERE r.registerID = ? AND r.loginID = l.loginID";
-
-		PreparedStatement stmt_getRegisterDetails = con.prepareStatement(getSql);
-		stmt_getRegisterDetails.setInt(1, Integer.parseInt(registerID));
-
-		ResultSet rs5 = stmt_getRegisterDetails.executeQuery();
-
-		while (rs5.next()) {
-
-			register = new Register(registerID, rs5.getString(1), rs5.getString(2), rs5.getString(3), rs5.getString(4));
-		}
-
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-
-	return register;
-}
-
-public static Register getRegisterDetailsByLoginId(String loginID) {
-	
-	Register register = null;
-	try {
-
-		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
-
-		String getSql = "SELECT r.registerID, r.userName, l.L_email, r.phone, FROM register r, login l WHERE r.loginID = ? AND r.loginID = l.loginID";
-
-		PreparedStatement stmt_getRegisterDetails = con.prepareStatement(getSql);
-		stmt_getRegisterDetails.setInt(1, Integer.parseInt(loginID));
-
-		ResultSet rs = stmt_getRegisterDetails.executeQuery();
-
-		while (rs.next()) {
-
-			register = new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4));
-		}
-
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-
-	return register;
-}
-
-public static ArrayList<Register> getAllRegisters() {
-
-	ArrayList<Register> allRegisters = new ArrayList<>();
-	try {
-
-		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
-
-		String getSql = "SELECT r.registerID, r.userName, l.L_email, r.phone, FROM register r, login l WHERE r.loginID = l.loginID";
-
-		PreparedStatement stmt_getUserDetails = con.prepareStatement(getSql);
-
-		ResultSet rs = stmt_getUserDetails.executeQuery();
-
-		while (rs.next()) {
-			allRegisters.add(new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3), rs.getString(4));
-		}
-
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-
-	return allRegisters;
-
-}
-
-public static Register deleteRegister(String registerID) {
-	
-	Register register = null;
-	
-	try {
-		register = getRegisterDetails(registerID);
 		int loginID = getLoginID(registerID);
-		
-		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
-		
-		String deleteFromRegister = "DELETE FROM user WHERE registerID = " + registerID;
+		String passwordVerification = verifyPassword(registerID, currentPassword);
 
-		if (loginID > 0) {
-			String deleteFromLogin = "DELETE FROM login WHERE loginID = " + loginID;
-			PreparedStatement stmt_deleteFromRegister = con.prepareStatement(deleteFromRegister);
-			if (stmt_deleteFromRegister.executeUpdate() > 0) {
+		if (passwordVerification.equalsIgnoreCase("success")) {
+			String changePassword = "UPDATE login SET L_assword = " + newPassword;
 
-				PreparedStatement stmt_deleteFromLogin = con.prepareStatement(deleteFromLogin);
-				if (stmt_deleteFromLogin.executeUpdate() < 0) {
-					register = null;
-				}
-
+			PreparedStatement stmt_changePassword = con.prepareStatement(changePassword);
+			if (stmt_changePassword.executeUpdate() > 0) {
+				status = "success";
+			} else {
+				status = "fail";
 			}
 		}
 
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	return register;
+
+	return status;
 }
+
 
 	
 }
