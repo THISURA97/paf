@@ -104,23 +104,11 @@ public static HashMap<String, String> login(String email, String password, Strin
 		stmt_verifyLogin.setString(1, email);
 		stmt_verifyLogin.setString(2, password);
 		
-		ResultSet rs1_verifyLogin = stmt_verifyLogin.executeQuery();
+		ResultSet rs_verifyLogin = stmt_verifyLogin.executeQuery();
 
-		while (rs1_verifyLogin.next()) {
-
-			if (rs1_verifyLogin.getInt(2) == Integer.parseInt(roleID)) {
-
-				h.put("status", "success");
-				h.put("registerId") register.getRegisterID());
-			}else {
-				h.put("status", "fail");
-				h.put("userId", null);
-			}
-		}
-
-	} catch (Exception e) {
+		} catch (Exception e) {
 		e.printStackTrace();
-	}
+		}
 
 	return h;
 }
