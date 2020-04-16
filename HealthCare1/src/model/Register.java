@@ -126,7 +126,7 @@ public static HashMap<String, String> login(String email, String password, Strin
 	return h;
 }
 
-public static int getLoginId(String registerID) {
+public static int getLoginID(String registerID) {
 	
 	int loginID = 0;
 	
@@ -146,6 +146,107 @@ public static int getLoginId(String registerID) {
 	}
 	return loginID;
 }
+
+public static String getRoleName(String roleID) {
+
+	String roleName = null;
+
+	try {
+
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+		String getroleName = "SELECT roleName FROM role WHERE roleID = " + roleID;
+		PreparedStatement stmt_getroleName = con.prepareStatement(getroleName);
+		ResultSet rs3_getroleName = stmt_getroleName.executeQuery();
+
+		while (rs3_getroleName.next()) {
+			roleName = rs3_getroleName.getString(1);
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	return roleName;
+}
+
+public static String verifyPassword(String registerID, String currentPassword) {
+	String status = null;
+
+	try {
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+		int loginID = getLoginID(registerID);
+		String getLoginID = "SELECT * FROM login WHERE loginID = ? AND L_password = ?";
+
+		PreparedStatement stmt_verifyPassword = con.prepareStatement(getLoginID);
+		stmt_verifyPassword.setInt(1, loginID);
+		stmt_verifyPassword.setString(2, currentPassword);
+
+		ResultSet rs4_verifyPassword = stmt_verifyPassword.executeQuery();
+
+		if (rs4_verifyPassword.first()) {
+			status = "success";
+		} else {
+			status = "fail";
+		}
+
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+
+	return status;
+}
+
+public static Register getRegisterDetails(String registerID) {
+	Register register = null;
+	try {
+
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+
+		String getSql = "SELECT r.userName, l.L_Email, r.phone, FROM register r, login l WHERE r.registerID = ? AND r.loginID = l.loginID";
+
+		PreparedStatement stmt_getRegisterDetails = con.prepareStatement(getSql);
+		stmt_getRegisterDetails.setInt(1, Integer.parseInt(registerID));
+
+		ResultSet rs5 = stmt_getRegisterDetails.executeQuery();
+
+		while (rs5.next()) {
+
+			register = new Register(registerID, rs5.getString(1), rs5.getString(2), rs5.getString(3));
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	return register;
+}
+
+public static Register getRegisterDetailsByLoginId(String loginID) {
+	
+	Register register = null;
+	try {
+
+		Connection con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
+
+		String getSql = "SELECT r.registerID, r.userName, l.L_email, r.phone, FROM register r, login l WHERE r.loginID = ? AND r.loginID = l.loginID";
+
+		PreparedStatement stmt_getRegisterDetails = con.prepareStatement(getSql);
+		stmt_getRegisterDetails.setInt(1, Integer.parseInt(loginID));
+
+		ResultSet rs = stmt_getRegisterDetails.executeQuery();
+
+		while (rs.next()) {
+
+			register = new Register(String.valueOf(rs.getInt(1)), rs.getString(2), rs.getString(3));
+		}
+
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+
+	return register;
+}
+
 	
 }
 
