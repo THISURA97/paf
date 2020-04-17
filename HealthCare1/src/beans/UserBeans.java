@@ -5,10 +5,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import model.User;
 
-@XmlRootElement
+@XmlRootElement(name = "UserBeans")
 public class UserBeans {
 	
-	int id;
+	int userID;
 	private String firstName;
 	private String lastName;
 	private String dob;
@@ -29,7 +29,7 @@ public class UserBeans {
 		
 		if (userObject.get("userID") !=null) {
 			
-			this.id = userObject.get("userID").getAsInt();
+			this.userID = userObject.get("userID").getAsInt();
 		}
 		
 		this.firstName = userObject.get("firstName").getAsString();	
@@ -44,9 +44,9 @@ public class UserBeans {
 		this.password = userObject.get("password").getAsString();	
 	}
 	
-	public UserBeans (int id, String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email, String username, String password) {
+	public UserBeans (int userID, String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email, String username, String password) {
 		
-		this.id = id;
+		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dob = dob;
@@ -88,12 +88,12 @@ public class UserBeans {
 		this.password = password;
 	}
 
-	public int getId() {
-		return id;
+	public int getUserID() {
+		return userID;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 
 	public String getFirstname() {
@@ -160,9 +160,5 @@ public class UserBeans {
 		this.email = email;
 	}
 
-	
-	
-	
-	
 	
 }
