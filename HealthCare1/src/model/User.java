@@ -45,7 +45,7 @@ public class User {
 			}
 			
 			// prepared statements
-			String userQuery = "inser into user" + "(userID, firstName, lastName, dob, age, gender, address, phone, email)" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String userQuery = "inser into user" + "(userID, firstName, lastName, dob, age, gender, address, phone, email, username, password)" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement preparedStmtUser = con.prepareStatement(userQuery);
 			
@@ -59,6 +59,8 @@ public class User {
 			preparedStmtUser.setString(7, usr.getAddress());
 			preparedStmtUser.setString(8, usr.getPhone());
 			preparedStmtUser.setString(9, usr.getEmail());
+			preparedStmtUser.setString(10, usr.getUsername());
+			preparedStmtUser.setString(9, usr.getPassword());
 			
 			//Execute the statement
 			preparedStmtUser.execute();
@@ -92,7 +94,7 @@ public class User {
  				return usrList;
  			}
  			
- 			String query = "select u.userID, u.firstName, u.lastNmae, u.dob, u.age, u.gender, u.address, u.phone, u.email from user";
+ 			String query = "select u.userID, u.firstName, u.lastNmae, u.dob, u.age, u.gender, u.address, u.phone, u.email, u.username, u.password from user";
  			
  			Statement stmt = con.createStatement();
  			ResultSet rslt = stmt.executeQuery(query);
@@ -109,7 +111,9 @@ public class User {
  						rslt.getString("gender"),
  						rslt.getString("address"),
  						rslt.getString("phone"),
- 						rslt.getString("email")
+ 						rslt.getString("email"),
+ 						rslt.getString("username"),
+ 						rslt.getString("password")
  						
  				);
  				
@@ -145,7 +149,7 @@ public class User {
  			
  			//prepared statements
  			
- 			String userQuery = "UPDATE user SET" + "firstName=?," + "lastName=?," + "dob=?," + "age=?," + "gender=?," + "phone=?," + "email=?" + "WHERE userID=?";
+ 			String userQuery = "UPDATE user SET" + "firstName=?," + "lastName=?," + "dob=?," + "age=?," + "gender=?," + "phone=?," + "email=?," + "username," + "password" + "WHERE userID=?";
  			
  			PreparedStatement userDetails = con.prepareStatement(userQuery);
  			
@@ -158,6 +162,8 @@ public class User {
  			userDetails.setString(6, usr.getAddress());
  			userDetails.setString(7, usr.getPhone());
  			userDetails.setString(8, usr.getEmail());
+ 			userDetails.setString(8, usr.getUsername());
+ 			userDetails.setString(8, usr.getPassword());
  			userDetails.setInt(9, usr.getId());
  			
  			//Execute the statement

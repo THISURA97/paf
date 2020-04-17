@@ -17,6 +17,8 @@ public class UserBeans {
 	private String address;
 	private String phone;
 	private String email;
+	private String username;
+	private String password;
 	
 	
 	public UserBeans() {}
@@ -38,9 +40,11 @@ public class UserBeans {
 		this.address = userObject.get("address").getAsString();	
 		this.phone = userObject.get("phone").getAsString();
 		this.email = userObject.get("email").getAsString();	
+		this.username = userObject.get("username").getAsString();	
+		this.password = userObject.get("password").getAsString();	
 	}
 	
-	public UserBeans (int id, String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email) {
+	public UserBeans (int id, String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email, String username, String password) {
 		
 		this.id = id;
 		this.firstName = firstName;
@@ -51,9 +55,11 @@ public class UserBeans {
 		this.address = address;
 		this.phone = phone;
 		this.email = email;
+		this.email = username;
+		this.email = password;
 	}
 	
-	public UserBeans (String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email) {
+	public UserBeans (String firstName, String lastName, String dob, String age, String gender, String address, String phone, String email, String username, String password) {
 		
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -63,7 +69,25 @@ public class UserBeans {
 		this.address = address;
 		this.phone = phone;
 		this.email = email;
+		this.email = username;
+		this.email = password;
 	}
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public int getId() {
 		return id;
 	}
