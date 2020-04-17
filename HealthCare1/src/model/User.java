@@ -246,7 +246,7 @@ public class User {
 
 					UserBeans User = getUserDetailsByLoginId(String.valueOf(rs_verifyLogin.getInt(1)));
 					h.put("status", "success");
-					h.put("userId", User.getUserID());
+					//h.put("userID", User.getUserID());
 				}else {
 					h.put("status", "fail");
 					h.put("userId", null);
