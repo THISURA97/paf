@@ -143,7 +143,7 @@ public class Customer {
  		return output;
  	}
  	
- 	public String updateCustomer(String userID, String firstName, String lastName, String dob,  String age,  String gender,  String address,  String phone,  String email,  String username,  String password ) {
+ 	public String updateCustomer(String UserID, String FirstName, String LastName, String DOB,  String Age,  String Gender,  String Address,  String Phone,  String Email,  String Username,  String Password ) {
  		
  		String output = "";
  		
@@ -164,17 +164,17 @@ public class Customer {
  			PreparedStatement preparedStmt = con.prepareStatement(query);
  			
  			//Binding values 
- 			preparedStmt.setString(1, firstName);
- 			preparedStmt.setString(2, lastName);
- 			preparedStmt.setString(3, dob);
- 			preparedStmt.setInt(4, Integer.parseInt(age));
-			preparedStmt.setString(5, gender);
-			preparedStmt.setString(6, address);
-			preparedStmt.setString(7, phone);
-			preparedStmt.setString(8, email);
-			preparedStmt.setString(9, username);
-			preparedStmt.setString(10, password);
- 			preparedStmt.setInt(11, Integer.parseInt(userID));
+ 			preparedStmt.setString(1, FirstName);
+ 			preparedStmt.setString(2, LastName);
+ 			preparedStmt.setString(3, DOB);
+ 			preparedStmt.setInt(4, Integer.parseInt(Age));
+			preparedStmt.setString(5, Gender);
+			preparedStmt.setString(6, Address);
+			preparedStmt.setString(7, Phone);
+			preparedStmt.setString(8, Email);
+			preparedStmt.setString(9, Username);
+			preparedStmt.setString(10, Password);
+ 			preparedStmt.setInt(11, Integer.parseInt(UserID));
  			
  			//Execute the statement
  			preparedStmt.execute();
