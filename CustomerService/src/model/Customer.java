@@ -37,7 +37,7 @@ public class Customer {
 			}
 			
 			// prepared statements
-			String query = "inser into user + (`userID`,`firstName`,`lastName`,`dob`,`age`, `gender`, `address`, `phone`,`email`,`username`, `password`)" 
+			String query = "insert into user (`userID`,`firstName`,`lastName`,`dob`,`age`, `gender`, `address`, `phone`,`email`,`username`, `password`)" 
 										+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
@@ -121,7 +121,7 @@ public class Customer {
  				output += "<td>" + password + "/td>";
  				
  				//buttons
- 				output += "<td><input name= \"btnUpdate\" type=|\"button\"value=\"Update\" class=\"btn btn-secondary\"></td>"
+ 				output += "<td><input name= \"btnUpdate\" type=|\"button\"value=\" Update\" class=\"btn btn-secondary\"></td>"
  						+ "<td><form method=\"post\" action=\"customer.jsp\">"
  						+ "<input name=\"btnRemove\" type=\"submit\" value=\"Remove\"class=\"btn btn-danger\">"
  						+ "<input name=\"userID\" type=\"hidden\" value=\"" + userID

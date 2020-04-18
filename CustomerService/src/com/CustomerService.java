@@ -22,4 +22,18 @@ public class CustomerService {
 	public String readCustomer() {
 		return cusObj.readCustomer();
 	}
+
+	@POST
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Produces(MediaType.TEXT_PLAIN)
+	public String insertCustomer(@FormParam("firstName") String firstName, @FormParam("lastName") String lastName,
+			@FormParam("dob") String dob, @FormParam("age") String age, @FormParam("gender") String gender,
+			@FormParam("address") String address, @FormParam("phone") String phone, @FormParam("email") String email,
+			@FormParam("username") String username, @FormParam("password") String password) {
+		String output = cusObj.insertCustomer(firstName, lastName, dob, age, gender, address, phone, email, username,
+				password);
+
+		return output;
+	}
 }
