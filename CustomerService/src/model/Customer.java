@@ -7,56 +7,53 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class Customer {
-	
-private Connection connect() {
 		
+	private Connection connect() {
 		Connection con = null;
-		
 		try {
-			
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			//DB name, username, password
-			con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/healthcare", "root", "");
-			
-		} catch (Exception e) {
-			
-			e.printStackTrace();
+
+			 //Provide the correct details: DBServer/DBName, username, password
+			 con = DriverManager.getConnection("Jdbc:mysql://localhost:3306/healthcare?serverTimezone=UTC", "root", ""); 
+		}catch (Exception e) {
+			{
+				e.printStackTrace();
+			}
 		}
 		
 		return con;
 	}
 	
-	public String insertCustomer(String firstName, String lastName, String dob,  String age,  String gender,  String address,  String phone,  String email,  String username,  String password ) {
+	public String insertCustomer(String FirstName, String LastName, String DOB,  String Age,  String Gender,  String Address,  String Phone,  String Email,  String UserName,  String Password ) {
 		
 		String output = "";
 		
 		try {
 			
 			Connection con = connect();
-			
 			if (con == null) {
 				
 				return "Error while connecting to the database for inserting";
 			}
 			
 			// prepared statements
-			String query = "inser into user" + "(userID, firstName, lastName, dob, age, gender, address, phone, email, username, password)" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			String query = "inser into user + (`userID`,`firstName`,`lastName`,`dob`,`age`, `gender`, `address`, `phone`,`email`,`username`, `password`)" 
+										+ "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement preparedStmt = con.prepareStatement(query);
 			
 			//Binding values for user Table
 			preparedStmt.setInt(1, 0);
-			preparedStmt.setString(2, firstName);
-			preparedStmt.setString(3, lastName);
-			preparedStmt.setString(4, dob);
-			preparedStmt.setInt(5, Integer.parseInt(age));
-			preparedStmt.setString(6, gender);
-			preparedStmt.setString(7, address);
-			preparedStmt.setString(8, phone);
-			preparedStmt.setString(9, email);
-			preparedStmt.setString(10, username);
-			preparedStmt.setString(9, password);
+			preparedStmt.setString(2, FirstName);
+			preparedStmt.setString(3, LastName);
+			preparedStmt.setString(4, DOB);
+			preparedStmt.setInt(5, Integer.parseInt(Age));
+			preparedStmt.setString(6, Gender);
+			preparedStmt.setString(7, Address);
+			preparedStmt.setString(8, Phone);
+			preparedStmt.setString(9, Email);
+			preparedStmt.setString(10, UserName);
+			preparedStmt.setString(11, Password);
 			
 			//Execute the statement
 			preparedStmt.execute();
@@ -170,14 +167,14 @@ private Connection connect() {
  			preparedStmt.setString(1, firstName);
  			preparedStmt.setString(2, lastName);
  			preparedStmt.setString(3, dob);
- 			preparedStmt.setInt(5, Integer.parseInt(age));
-			preparedStmt.setString(6, gender);
-			preparedStmt.setString(7, address);
-			preparedStmt.setString(8, phone);
-			preparedStmt.setString(9, email);
-			preparedStmt.setString(10, username);
-			preparedStmt.setString(9, password);
- 			preparedStmt.setInt(9, Integer.parseInt(userID));
+ 			preparedStmt.setInt(4, Integer.parseInt(age));
+			preparedStmt.setString(5, gender);
+			preparedStmt.setString(6, address);
+			preparedStmt.setString(7, phone);
+			preparedStmt.setString(8, email);
+			preparedStmt.setString(9, username);
+			preparedStmt.setString(10, password);
+ 			preparedStmt.setInt(11, Integer.parseInt(userID));
  			
  			//Execute the statement
  			preparedStmt.execute();
@@ -233,5 +230,6 @@ private Connection connect() {
  		
  		return output;
  	}
-
+ 	
 }
+
