@@ -16,13 +16,13 @@ import org.jsoup.parser.Parser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import model.Item;
+import model.Schedule;
 
 
 @Path("/Items")
 
-public class itemService {
-	Item itemObj = new Item();
+public class ScheduleService {
+	Schedule itemObj = new Schedule();
 	@GET
 	@Path("/")
 	@Produces(MediaType.TEXT_HTML)
@@ -31,15 +31,26 @@ public class itemService {
 		return itemObj.readItems(); 
 	 }
 	
+	
+	@GET
+	@Path("/read")
+	@Produces(MediaType.TEXT_HTML)
+	public String readItemsType()
+	 {
+		return itemObj.readItemsType(); 
+	 }
+	
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
 	public String insertItem(@FormParam("scheduleDate") String scheduleDate,
 	 @FormParam("scheduleTime") String scheduleTime,
-	 @FormParam("scheduleType") String scheduleType)
+	 @FormParam("scheduleType") String scheduleType,
+	@FormParam("scheduleDoc") String scheduleDoc,
+	@FormParam("scheduleHos") String scheduleHos)
 	{
-	 String output = itemObj.insertItem(scheduleDate, scheduleTime, scheduleType);
+	 String output = itemObj.insertItem(scheduleDate, scheduleTime, scheduleType, scheduleDoc, scheduleHos);
 	return output;
 	}
 	
@@ -56,7 +67,9 @@ public class itemService {
 	 String scheduleDate = itemObject.get("scheduleDate").getAsString();
 	 String scheduleTime = itemObject.get("scheduleTime").getAsString();
 	 String scheduleType = itemObject.get("scheduleType").getAsString();
-	 String output = itemObj.updateItem(scheduleID, scheduleDate, scheduleTime, scheduleType);
+	 String scheduleDoc = itemObject.get("scheduleDoc").getAsString();
+	 String scheduleHos = itemObject.get("scheduleHos").getAsString();
+	 String output = itemObj.updateItem(scheduleID, scheduleDate, scheduleTime, scheduleType, scheduleDoc, scheduleHos);
 	return output;
 	}
 	@DELETE
